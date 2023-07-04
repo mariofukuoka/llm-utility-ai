@@ -1,15 +1,15 @@
 [gd_scene load_steps=10 format=3 uid="uid://do5subjom1rs"]
 
 [ext_resource type="Script" path="res://Player.gd" id="1_fks15"]
-[ext_resource type="Texture2D" uid="uid://bsg8ha80hqbx0" path="res://kenney_tiny-dungeon/Tiles/tile_0096.png" id="2_l6xsk"]
-[ext_resource type="Texture2D" uid="uid://dyxir4gajgryw" path="res://kenney_tiny-town/Tilemap/tilemap.png" id="3_gcbn1"]
-[ext_resource type="Texture2D" uid="uid://f0grh3ib36kr" path="res://kenney_tiny-dungeon/Tilemap/tilemap.png" id="4_s2twv"]
+[ext_resource type="Texture2D" uid="uid://bsg8ha80hqbx0" path="res://art/kenney_tiny-dungeon/Tiles/tile_0096.png" id="2_e0bqh"]
+[ext_resource type="Texture2D" uid="uid://dyxir4gajgryw" path="res://art/kenney_tiny-town/Tilemap/tilemap.png" id="3_4mro8"]
+[ext_resource type="Texture2D" uid="uid://f0grh3ib36kr" path="res://art/kenney_tiny-dungeon/Tilemap/tilemap.png" id="4_u5f33"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hlogk"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_l6xsk")
+"texture": ExtResource("2_e0bqh")
 }],
 "loop": true,
 "name": &"default",
@@ -21,7 +21,7 @@ size = Vector2(122, 124)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_caaci"]
 resource_name = "town"
-texture = ExtResource("3_gcbn1")
+texture = ExtResource("3_4mro8")
 separation = Vector2i(1, 1)
 0:0/0 = 0
 1:0/0 = 0
@@ -158,7 +158,7 @@ separation = Vector2i(1, 1)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_80jwy"]
 resource_name = "dungeon"
-texture = ExtResource("4_s2twv")
+texture = ExtResource("4_u5f33")
 separation = Vector2i(1, 1)
 0:0/0 = 0
 1:0/0 = 0

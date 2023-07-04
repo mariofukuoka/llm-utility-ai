@@ -1,0 +1,200 @@
+[gd_scene load_steps=24 format=3 uid="uid://cvae3dxaegyss"]
+
+[ext_resource type="Script" path="res://character.gd" id="1_lyqa5"]
+[ext_resource type="Texture2D" uid="uid://dbxaat0vr8p5i" path="res://art/kenney_tiny-dungeon/Tiles/tile_0086.png" id="2_5w4o3"]
+[ext_resource type="Texture2D" uid="uid://v34e1jo52t6d" path="res://art/kenney_tiny-dungeon/Tiles/tile_0110.png" id="3_74fu2"]
+[ext_resource type="Texture2D" uid="uid://y2cfysqx8nh1" path="res://art/kenney_tiny-dungeon/Tiles/tile_0109.png" id="4_db2am"]
+[ext_resource type="Texture2D" uid="uid://da0daq3qkgf4t" path="res://art/kenney_tiny-dungeon/Tiles/tile_0121.png" id="5_aam3m"]
+[ext_resource type="Texture2D" uid="uid://dld37mvhvh2x7" path="res://art/kenney_tiny-dungeon/Tiles/tile_0098.png" id="6_208a6"]
+[ext_resource type="Texture2D" uid="uid://bsg8ha80hqbx0" path="res://art/kenney_tiny-dungeon/Tiles/tile_0096.png" id="7_py4w2"]
+[ext_resource type="Texture2D" uid="uid://bik6gon3smyck" path="res://art/kenney_tiny-dungeon/Tiles/tile_0097.png" id="8_50ltw"]
+[ext_resource type="Texture2D" uid="uid://b7puia14wgblg" path="res://art/kenney_tiny-dungeon/Tiles/tile_0084.png" id="9_r218q"]
+[ext_resource type="Texture2D" uid="uid://dk70h6u0sxipj" path="res://art/kenney_tiny-dungeon/Tiles/tile_0099.png" id="10_tlvue"]
+[ext_resource type="Texture2D" uid="uid://dopjt7lcyk7kg" path="res://art/kenney_tiny-dungeon/Tiles/tile_0100.png" id="11_8e865"]
+[ext_resource type="Texture2D" uid="uid://chhpyyb7r5ahs" path="res://art/kenney_tiny-dungeon/Tiles/tile_0112.png" id="12_tvkgr"]
+[ext_resource type="Texture2D" uid="uid://dyusnc6c20po7" path="res://art/kenney_tiny-dungeon/Tiles/tile_0123.png" id="13_uw1k4"]
+[ext_resource type="Texture2D" uid="uid://dy8u3nrto4gus" path="res://art/kenney_tiny-dungeon/Tiles/tile_0124.png" id="14_lb1il"]
+[ext_resource type="Texture2D" uid="uid://rebl7a1ekwa0" path="res://art/kenney_tiny-dungeon/Tiles/tile_0108.png" id="15_d0fg3"]
+[ext_resource type="Texture2D" uid="uid://bsmjck4e7gvo7" path="res://art/kenney_tiny-dungeon/Tiles/tile_0122.png" id="16_mdudg"]
+[ext_resource type="Texture2D" uid="uid://cdvqjncomdwsw" path="res://art/kenney_tiny-dungeon/Tiles/tile_0085.png" id="17_ruwqg"]
+[ext_resource type="Texture2D" uid="uid://cms7rfioxxv3n" path="res://art/kenney_tiny-dungeon/Tiles/tile_0088.png" id="18_uo1m4"]
+[ext_resource type="Texture2D" uid="uid://da526lmnkwbxm" path="res://art/kenney_tiny-dungeon/Tiles/tile_0111.png" id="19_q8gx5"]
+[ext_resource type="Texture2D" uid="uid://b2hafwos8gmb4" path="res://art/kenney_tiny-dungeon/Tiles/tile_0087.png" id="20_lxosd"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1wom8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_5w4o3")
+}],
+"loop": true,
+"name": &"blacksmith",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_74fu2")
+}],
+"loop": true,
+"name": &"crab",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_db2am")
+}],
+"loop": true,
+"name": &"cyclops",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_aam3m")
+}],
+"loop": true,
+"name": &"ghost",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_py4w2")
+}],
+"loop": true,
+"name": &"knight",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_208a6")
+}],
+"loop": true,
+"name": &"knight_nohelmet",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_50ltw")
+}],
+"loop": true,
+"name": &"knight_visorup",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_r218q")
+}],
+"loop": true,
+"name": &"mage",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("10_tlvue")
+}],
+"loop": true,
+"name": &"maiden",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_8e865")
+}],
+"loop": true,
+"name": &"old_lady",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_tvkgr")
+}],
+"loop": true,
+"name": &"ranger",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_uw1k4")
+}],
+"loop": true,
+"name": &"rat_brown",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_lb1il")
+}],
+"loop": true,
+"name": &"rat_grey",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_d0fg3")
+}],
+"loop": true,
+"name": &"slime",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("16_mdudg")
+}],
+"loop": true,
+"name": &"spider",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_ruwqg")
+}],
+"loop": true,
+"name": &"villager",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_uo1m4")
+}],
+"loop": true,
+"name": &"villager_2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("19_q8gx5")
+}],
+"loop": true,
+"name": &"warlock",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_lxosd")
+}],
+"loop": true,
+"name": &"warrior",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t8rnq"]
+radius = 7.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_uekmm"]
+radius = 17.0
+
+[node name="Character" type="CharacterBody2D"]
+script = ExtResource("1_lyqa5")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_1wom8")
+animation = &"crab"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_t8rnq")
+
+[node name="ItemDetectionArea" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemDetectionArea"]
+shape = SubResource("CircleShape2D_uekmm")

@@ -50,3 +50,13 @@ func drop_held_item():
 		held_item.is_being_held = false
 		held_item = null
 		
+func chat(text):
+	$HUD/ChatBubble.modulate.a = 1
+	$HUD/ChatBubble.text = text
+	$HUD/ChatBubble/ChatFadeTimer.start()
+	
+func _on_chat_fade_timer_timeout():
+	print('fading')
+	var tween = get_tree().create_tween()
+	tween.tween_property($HUD/ChatBubble, 'modulate:a', 0, 5)
+		

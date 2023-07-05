@@ -27,8 +27,7 @@ func get_input():
 			$HUD/ChatBox.grab_focus()
 		else:
 			if $HUD/ChatBox.text != '':
-				say($HUD/ChatBox.text)
-				trigger_npc_reply($HUD/ChatBox.text)
+				send_chat_message($HUD/ChatBox.text)
 			$HUD/ChatBox.text = ''
 			is_typing = false
 			$HUD/ChatBox.release_focus()
@@ -36,12 +35,33 @@ func get_input():
 		is_typing = false
 		$HUD/ChatBox.release_focus()
 
-func trigger_npc_reply(text):
+func send_chat_message(text: String):
+	say(text)
+	# detect nearby npcs
 	var nearby_npcs = $PerceivedArea.get_overlapping_bodies().filter(func(body): return body is NPC)
 	print(nearby_npcs)
 	if nearby_npcs.size() > 0:
-		nearby_npcs[0].reply(text)
+		# if message starts with /, interpret as command
+		if text.begins_with('/'):
+			command_npc(text, nearby_npcs[0])
+		else:
+			nearby_npcs[0].reply(text)
 	
+func command_npc(command: String, npc: NPC):
+	var args = command.get_slice('/', 1).split(' ')
+	match args[0]:
+		'move':
+			npc.move_to_target(Vector2(args[1] as float, args[2] as float))
+		'pickup':
+			npc.pick_up_nearest_item()
+		'drop':
+			npc.drop_held_item()
+		'use':
+			npc.use_held_item()
+		'say':
+			npc.say(args[1])
+		'follow':
+			npc.move_to_target(global_position)
 
 func _physics_process(delta):
 	get_input()

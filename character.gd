@@ -21,8 +21,6 @@ func set_appearance():
 	$AnimatedSprite2D.play(sprite_name)
 	appearance = sprite_name
 
-func move():
-	pass
 
 func pick_up_item(item: Item):
 	if not item.is_being_held:
@@ -35,7 +33,7 @@ func pick_up_item(item: Item):
 
 func pick_up_nearest_item():
 	var nearby_items = $ItemDetectionArea.get_overlapping_areas().filter(func(a): return a is Item)
-	if nearby_items.size()> 0:
+	if nearby_items.size() > 0:
 		nearby_items.sort_custom(_compare_dist_to)
 		pick_up_item(nearby_items[0])
 		

@@ -15,8 +15,8 @@ func get_input():
 		if Input.is_action_just_pressed('pick_up_or_drop_item'):
 			if not held_item: pick_up_nearest_item()
 			else: drop_held_item()
-		elif Input.is_action_just_pressed('use_item'):
-			if held_item: held_item.use()
+		elif Input.is_action_just_pressed('use_item'): 
+			use_held_item()
 	else:
 		# to make sure player stops when pressing enter instead of sliding forever
 		velocity = Vector2.ZERO
@@ -34,34 +34,21 @@ func get_input():
 	elif Input.is_action_just_pressed('release_chat_focus'):
 		is_typing = false
 		$HUD/ChatBox.release_focus()
+		print(GlobalData.get_world_description())
 
 func send_chat_message(text: String):
-	say(text)
 	# detect nearby npcs
 	var nearby_npcs = $PerceivedArea.get_overlapping_bodies().filter(func(body): return body is NPC)
 	print(nearby_npcs)
 	if nearby_npcs.size() > 0:
 		# if message starts with /, interpret as command
 		if text.begins_with('/'):
-			command_npc(text, nearby_npcs[0])
+			var args = text.get_slice('/', 1).split(' ')
+			nearby_npcs[0].act(args[0], args.slice(1, args.size()))
 		else:
-			nearby_npcs[0].reply(text)
-	
-func command_npc(command: String, npc: NPC):
-	var args = command.get_slice('/', 1).split(' ')
-	match args[0]:
-		'move':
-			npc.move_to_target(Vector2(args[1] as float, args[2] as float))
-		'pickup':
-			npc.pick_up_nearest_item()
-		'drop':
-			npc.drop_held_item()
-		'use':
-			npc.use_held_item()
-		'say':
-			npc.say(args[1])
-		'follow':
-			npc.move_to_target(global_position)
+			say(text)
+			nearby_npcs[0].reply(appearance, text)
+			
 
 func _physics_process(delta):
 	get_input()

@@ -54,9 +54,9 @@ func chat(text):
 	$HUD/ChatBubble.modulate.a = 1
 	$HUD/ChatBubble.text = text
 	$HUD/ChatBubble/ChatFadeTimer.start()
+	GlobalData.chat_log.append({'name':appearance, 'content':text})
 	
 func _on_chat_fade_timer_timeout():
-	print('fading')
 	var tween = get_tree().create_tween()
 	tween.tween_property($HUD/ChatBubble, 'modulate:a', 0, 5)
 		

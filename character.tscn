@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://cvae3dxaegyss"]
+[gd_scene load_steps=25 format=3 uid="uid://cvae3dxaegyss"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_lyqa5"]
 [ext_resource type="Texture2D" uid="uid://dbxaat0vr8p5i" path="res://art/kenney_tiny-dungeon/Tiles/tile_0086.png" id="2_5w4o3"]
@@ -182,6 +182,9 @@ radius = 7.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_uekmm"]
 radius = 17.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_m436t"]
+radius = 50.0
+
 [node name="Character" type="CharacterBody2D"]
 script = ExtResource("1_lyqa5")
 
@@ -196,8 +199,9 @@ shape = SubResource("CircleShape2D_t8rnq")
 [node name="ItemDetectionArea" type="Area2D" parent="."]
 collision_layer = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ItemDetectionArea"]
+[node name="Reach" type="CollisionShape2D" parent="ItemDetectionArea"]
 shape = SubResource("CircleShape2D_uekmm")
+debug_color = Color(0.768627, 0.447059, 0, 0.419608)
 
 [node name="HUD" type="Node2D" parent="."]
 
@@ -214,5 +218,12 @@ vertical_alignment = 2
 [node name="ChatFadeTimer" type="Timer" parent="HUD/ChatBubble"]
 wait_time = 5.0
 one_shot = true
+
+[node name="PerceivedArea" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="Sight" type="CollisionShape2D" parent="PerceivedArea"]
+shape = SubResource("CircleShape2D_m436t")
+debug_color = Color(0, 0.647059, 0.25098, 0.419608)
 
 [connection signal="timeout" from="HUD/ChatBubble/ChatFadeTimer" to="." method="_on_chat_fade_timer_timeout"]

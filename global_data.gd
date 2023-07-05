@@ -2,12 +2,10 @@ extends Node
 
 
 var chat_log = []
+var api_key: String
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	var config = ConfigFile.new()
+	var err = config.load('res://secret.cfg')
+	api_key = config.get_value('OpenAI', 'api_key')
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

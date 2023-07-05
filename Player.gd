@@ -26,13 +26,22 @@ func get_input():
 			is_typing = true
 			$HUD/ChatBox.grab_focus()
 		else:
-			chat($HUD/ChatBox.text)
+			if $HUD/ChatBox.text != '':
+				say($HUD/ChatBox.text)
+				trigger_npc_reply($HUD/ChatBox.text)
 			$HUD/ChatBox.text = ''
 			is_typing = false
 			$HUD/ChatBox.release_focus()
 	elif Input.is_action_just_pressed('release_chat_focus'):
 		is_typing = false
 		$HUD/ChatBox.release_focus()
+
+func trigger_npc_reply(text):
+	var nearby_npcs = $PerceivedArea.get_overlapping_bodies().filter(func(body): return body is NPC)
+	print(nearby_npcs)
+	if nearby_npcs.size() > 0:
+		nearby_npcs[0].reply(text)
+	
 
 func _physics_process(delta):
 	get_input()

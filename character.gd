@@ -7,6 +7,8 @@ var items
 var held_item = null
 var appearance = null
 
+var chat_fade_tween: Tween
+
 var SPEED = 100
 
 func _ready():
@@ -30,15 +32,16 @@ func pick_up_item(item: Item):
 		item.is_being_held = true
 		held_item = item
 
-func pick_up_nearest_item():
-	var nearby_items = $ItemDetectionArea.get_overlapping_areas()
-	print(nearby_items)
-	if nearby_items.size()> 0:
-		var compare_dist_to = func(a, b): 
-			position.distance_to(a.position) < position.distance_to(b.position)
-		nearby_items.sort_custom(compare_dist_to)
-		pick_up_item(nearby_items[0])
 
+func pick_up_nearest_item():
+	var nearby_items = $ItemDetectionArea.get_overlapping_areas().filter(func(a): return a is Item)
+	if nearby_items.size()> 0:
+		nearby_items.sort_custom(_compare_dist_to)
+		pick_up_item(nearby_items[0])
+		
+func _compare_dist_to(a, b): 
+	return position.distance_to(a.position) < position.distance_to(b.position)
+	
 func use_held_item():
 	held_item.use()
 
@@ -50,13 +53,14 @@ func drop_held_item():
 		held_item.is_being_held = false
 		held_item = null
 		
-func chat(text):
+func say(text):
+	if chat_fade_tween: chat_fade_tween.kill()
 	$HUD/ChatBubble.modulate.a = 1
 	$HUD/ChatBubble.text = text
 	$HUD/ChatBubble/ChatFadeTimer.start()
 	GlobalData.chat_log.append({'name':appearance, 'content':text})
 	
 func _on_chat_fade_timer_timeout():
-	var tween = get_tree().create_tween()
-	tween.tween_property($HUD/ChatBubble, 'modulate:a', 0, 5)
+	chat_fade_tween = get_tree().create_tween()
+	chat_fade_tween.tween_property($HUD/ChatBubble, 'modulate:a', 0, 5)
 		

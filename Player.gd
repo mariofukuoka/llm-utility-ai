@@ -13,7 +13,8 @@ func get_input():
 	if Input.is_action_just_pressed('pick_up_or_drop_item'):
 		if not held_item: pick_up_nearest_item()
 		else: drop_held_item()
-			
+	elif Input.is_action_just_pressed('use_item'):
+		if held_item: held_item.use()
 
 func _physics_process(delta):
 	get_input()

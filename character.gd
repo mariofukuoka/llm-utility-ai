@@ -3,7 +3,7 @@ extends CharacterBody2D
 class_name Character
 
 var items
-@export var health = 100
+@export var health = 50
 var held_item = null
 var appearance = null
 
@@ -150,7 +150,7 @@ func get_system_prompt():
 	Item you are holding: [{5}]
 	Items you can see: [{6}]
 	You can act by outputting a JSON of the following form:
-	[{"action": <action name>, "args": <action parameters, if applicable>},]
+	[[<action1>, <argument1>],[<action2>, <argument2>], ...] etc.
 	The list of objects represents a sequence of actions to execute one after another.
 	Available actions:
 	- "move" (moves you to a point) takes a list of two numbers specifying coordinates to move to (e.q. [10, 10])
@@ -159,8 +159,8 @@ func get_system_prompt():
 	- "drop" (drops held item)
 	- "use" (uses an item)
 	- "wait" (stay idle for some time) takes a number of seconds as input (e.q. 5)
-	For example, if you wanted to pick up an item located at (20, 20), you would output [{"action":"move", "args":[20, 20]}, {"action":"pickup", "args":null}].
-	If you wanted to then go somewhere to (60, 30) and leave the item there, you would output [{"action":"move", "args":[60, 30]}, {"action":"drop", "args":null}]
+	For example, if you wanted to pick up an item located at (20, 20), you would output [["move", [20,20]], ["pickup"]].
+	If you wanted to then go somewhere to (60, 30) and leave the item there, you would output [[move", "args":[60, 30]], ["drop"]]
 	If someone asked you to bring some item to them, you would first say something back to them, then move to the item, pick up, move to that person, then drop.
 	Please reply with only the JSON object and nothing else. If an action takes no arguments, explicitly return them as null instead of omitting them.
 	""".format([

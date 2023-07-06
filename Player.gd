@@ -37,6 +37,7 @@ func get_input():
 		var nearby_npcs = get_perceived_npcs()
 		if nearby_npcs.size() > 0:
 			print(nearby_npcs[0].get_system_prompt())
+			print(nearby_npcs[0].get_instance_id())
 
 func send_chat_message(text: String):
 	# detect nearby npcs

@@ -17,12 +17,11 @@ func reply(to_whom, text):
 	var parsed_actions = JSON.parse_string(LLM_decision)
 	action_queue.append_array(parsed_actions)
 
-func execute_action(action_dict):
+func execute_action(action_tuple):
 	
 	is_executing_action = true
-	var action = action_dict['action']
-	var args = null
-	if action_dict['args']: args = action_dict['args']
+	var action = action_tuple[0]
+	var args = action_tuple[1] if action_tuple.size() > 1 else null
 	match action:
 		'move':
 			await move_to_target(Vector2(args[0] as float, args[1] as float))
@@ -33,7 +32,7 @@ func execute_action(action_dict):
 		'use':
 			use_held_item()
 		'say':
-			say(args)
+			say(action_tuple[1])
 		'wait':
 			await wait(args as int)
 	

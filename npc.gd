@@ -31,14 +31,14 @@ func act(action, args=null):
 		'say':
 			say(args)
 		'move_and_pickup':
-			move_to_target(Vector2(args[0] as float, args[1] as float))
-			await reached_target
+			await move_to_target(Vector2(args[0] as float, args[1] as float))
 			pick_up_nearest_item()
 			
 	
 func move_to_target(target: Vector2):
 	is_moving = true
 	curr_target = target
+	await reached_target
 	
 func _physics_process(delta):
 	if is_moving:

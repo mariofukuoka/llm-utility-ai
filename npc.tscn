@@ -5,4 +5,3 @@
 
 [node name="NPC" instance=ExtResource("1_raoj2")]
 script = ExtResource("2_2qvsn")
-health = null

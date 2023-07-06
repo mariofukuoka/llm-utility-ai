@@ -109,10 +109,10 @@ func get_perceived_characters(mode=null):
 		return nearby_characters
 
 func get_perceived_npcs():
-	return get_perceived_characters().filter(func(char): return char is NPC and char != self)
+	return get_perceived_characters().filter(func(char): return char is NPC)
 
 func get_perceived_players():
-	return get_perceived_characters().filter(func(char): return char is Player and char != self)
+	return get_perceived_characters().filter(func(char): return char is Player)
 
 func get_items_in_reach():
 	var nearby_items = $ItemDetectionArea.get_overlapping_areas().filter(func(a): return a is Item and not a.is_being_held)
@@ -141,9 +141,10 @@ func get_system_prompt():
 	You are an NPC in an RPG game. You are a {0}. Respond in character and keep your response short.
 	Event log:
 	{1}
-	Characters you can see: [{2}]
-	Item you are holding: [{3}]
-	Items you can see: [{4}]
+	Your position: ({2}, {3})
+	Characters you can see: [{4}]
+	Item you are holding: [{5}]
+	Items you can see: [{6}]
 	You can act by outputting a JSON of the following form:
 	{"action": <action name>, "args": <action parameters, if applicable>}
 	Available actions:
@@ -158,6 +159,8 @@ func get_system_prompt():
 	""".format([
 		appearance, 
 		GlobalData.get_world_description(appearance), 
+		global_position.x as int,
+		global_position.y as int,
 		", ".join(get_perceived_characters(MODE.DESC_ONLY)),
 		held_item.get_description() if held_item else '',
 		", ".join(get_perceived_items(MODE.DESC_ONLY))

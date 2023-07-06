@@ -4,10 +4,11 @@ extends Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var char = character_template.instantiate()
-	char.position = Vector2(randi_range(60, 180), randi_range(60, 180)) 
-	print(char.appearance)
-	add_child(char)
+	for i in 2:
+		var char = character_template.instantiate()
+		char.position = Vector2(randi_range(60, 180), randi_range(60, 180)) 
+		print(char.appearance)
+		add_child(char)
 	
 	for i in 5:
 		var item = item_template.instantiate()

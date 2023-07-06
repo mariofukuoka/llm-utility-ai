@@ -19,7 +19,9 @@ func use():
 	if is_being_held:
 		print('{0} used'.format([self.appearance]))
 
-func get_description():
+func get_description(viewer_pos:=Vector2.ZERO):
 	var desc = appearance
-	#desc += ' ({0},{1})'.format([global_position.x as int, global_position.y as int])
+	var relative_pos = global_position - viewer_pos
+	var dist_m = (relative_pos.length() / 16) as int
+	desc += '({0}m away)'.format([dist_m])
 	return desc

@@ -23,3 +23,5 @@ func get_world_description(character):
 		world_desc += event_desc + '\n'
 	return world_desc
 		
+func get_compass_direction(vector: Vector2):
+	pass

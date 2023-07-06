@@ -12,7 +12,7 @@ var is_executing_action = false
 func reply(to_whom, text):
 	var prompt = get_system_prompt()
 	print(prompt)
-	var LLM_decision = await GPTApi.get_completion(prompt)
+	var LLM_decision = await $GPTApi.get_completion(prompt)
 	print(LLM_decision)
 	var parsed_actions = JSON.parse_string(LLM_decision)
 	action_queue.append_array(parsed_actions['action_as_sequence'])

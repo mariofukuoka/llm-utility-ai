@@ -108,7 +108,7 @@ func get_perceived_characters(mode=null):
 	if mode == MODE.NAME_ONLY:
 		return nearby_characters.map(func(c): return c.appearance)
 	elif mode == MODE.DESC_ONLY:
-		return nearby_characters.map(func(c): return c.get_description())
+		return nearby_characters.map(func(c): return c.get_description(global_position))
 	else:
 		return nearby_characters
 
@@ -129,14 +129,16 @@ func get_perceived_items(mode=null):
 	if mode == MODE.NAME_ONLY:
 		return nearby_items.map(func(i): return i.appearance)
 	elif mode == MODE.DESC_ONLY:
-		return nearby_items.map(func(i): return i.get_description())
+		return nearby_items.map(func(i): return i.get_description(global_position))
 	else:
 		return nearby_items
 		
-func get_description():
+func get_description(viewer_pos:=Vector2.ZERO):
 	var desc = appearance
 	if held_item: desc += ' holding a ' + held_item.appearance
-	#desc += ' ({0},{1})'.format([global_position.x as int, global_position.y as int])
+	var relative_pos = global_position - viewer_pos
+	var dist_m = (relative_pos.length() / 16) as int
+	desc += '({0}m away)'.format([dist_m])
 	return desc
 	
 func get_perceived_character_by_name(name):
@@ -167,7 +169,7 @@ func get_system_prompt():
 	Item you are holding: [{5}]
 	Items you can see on the ground: [{6}]
 	Please output according to the following format:
-	{"observations": <your character's observations>,"action_description": <what to do now>,"action_as_sequence":[[<action1>,<argument1>],[<action2>,<argument2>],<etc>]}
+	{"observations": <your character's observations>,"what_to_do": <what you should say or do now>,"action_as_sequence":[[<action1>,<argument1>],[<action2>,<argument2>],<etc>]}
 	The list of action, argument tuples represents a sequence of actions to execute one after another.
 	Available actions:
 	- "move": moves you to a character or item as specified by name
@@ -179,7 +181,9 @@ func get_system_prompt():
 	- "wait": if you want to stay idle, or have nothing to do, wait for some time, takes a number of seconds as input (e.q. 5)
 	Your job is to interpret what's happening in the world, and convert that into actions to undertake next.
 	For example, if a character asks you to bring them a potion, you would output:
-	{"observations": "I am asked to bring the character a potion.","action_description": "I should go to the potion, pick it up, then bring it to the character and drop it.","action_as_sequence":[["move","potion"],["pickup"],["move","character"],["drop"],["say","Here you go!"]]}
+	{"observations":"I am asked to bring the character a potion.","what_to_do": "I should go to the potion, pick it up, then bring it to the character and drop it.","action_as_sequence":[["move","potion"],["pickup"],["move","character"],["drop"],["say","Here you go!"]]}
+	Another example:
+	{"observations":"The adventurer just told me that the sword is magical! I should keep it to myself.","what_to_do":"I should go pick up the sword, then tell the adventurer to back away!","action_as_sequence":[["move","weapon_sword"],["pickup"],["use"],["say","This is mine, haha! Back off if you value your life!"]}
 	Please only respond with the JSON string.
 	""".format([
 		appearance, 

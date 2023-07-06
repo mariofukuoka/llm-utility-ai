@@ -50,7 +50,8 @@ func send_chat_message(text: String):
 			nearby_npcs[0].act(args[0], args.slice(1, args.size()))
 		else:
 			say(text)
-			nearby_npcs[0].reply(appearance, text)
+			for npc in nearby_npcs:
+				npc.reply(appearance, text)
 			
 
 func _physics_process(delta):

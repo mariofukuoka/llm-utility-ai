@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 GlobalData="*res://global_data.gd"
-GPTApi="*res://gpt_api.gd"
 
 [display]
 

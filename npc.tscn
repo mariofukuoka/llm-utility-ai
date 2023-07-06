@@ -7,4 +7,10 @@
 [node name="NPC" instance=ExtResource("1_raoj2")]
 script = ExtResource("2_2qvsn")
 
+[node name="MouseOver" type="Container" parent="HUD" index="2"]
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+
 [node name="GPTApi" parent="." index="5" instance=ExtResource("3_swekx")]

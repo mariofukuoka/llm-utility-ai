@@ -100,7 +100,7 @@ func say(text):
 func _on_chat_fade_timer_timeout():
 	chat_fade_tween = get_tree().create_tween()
 	chat_fade_tween.tween_property($HUD/ChatBubble, 'modulate:a', 0, 5)
-
+	
 
 func attack(target: Character, damage_value=10):
 	print('attacking {0} for {1} damage'.format([target.appearance, damage_value]))

@@ -8,6 +8,7 @@ var is_moving = false
 var curr_target: Vector2
 var action_queue = []
 var is_executing_action = false
+var thought_fade_tween: Tween
 
 func get_next_actions():
 	var prompt = get_system_prompt()
@@ -15,6 +16,11 @@ func get_next_actions():
 	var LLM_decision = await $GPTApi.get_completion(prompt)
 	print(LLM_decision)
 	var parsed_actions = JSON.parse_string(LLM_decision)
+	$HUD/MouseOver.tooltip_text = 'Observations: "{0}"\nWhat to do: "{1}\nAction as sequence: {2}'.format([
+		parsed_actions['observations'], 
+		parsed_actions['what_to_do'],
+		JSON.stringify(parsed_actions['action_as_sequence'])
+		])
 	action_queue.append_array(parsed_actions['action_as_sequence'])
 
 func execute_action(action_tuple):
@@ -63,6 +69,4 @@ func _move_every_frame():
 		var target_dir = global_position.direction_to(curr_target)
 		velocity = target_dir * SPEED
 		move_and_slide()
-
-
 

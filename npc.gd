@@ -6,22 +6,26 @@ signal reached_target
 const ARRIVAL_DIST_THRESHOLD = 1
 var is_moving = false
 var curr_target: Vector2
+var action_queue = []
+var is_executing_action = false
 
 func reply(to_whom, text):
 	var LLM_decision = await GPTApi.get_completion(get_system_prompt())
 	print(LLM_decision)
-	var parsed = JSON.parse_string(LLM_decision)
-	var action = parsed['action']
-	var args = null
-	if parsed['args']: args = parsed['args']
-	act(action, args)
+	var parsed_actions = JSON.parse_string(LLM_decision)
+	action_queue.append_array(parsed_actions)
 
-func act(action, args=null):
+func execute_action(action_dict):
+	
+	is_executing_action = true
+	var action = action_dict['action']
+	var args = null
+	if action_dict['args']: args = action_dict['args']
 	print(action)
 	print(args)
 	match action:
 		'move':
-			move_to_target(Vector2(args[0] as float, args[1] as float))
+			await move_to_target(Vector2(args[0] as float, args[1] as float))
 		'pickup':
 			pick_up_nearest_item()
 		'drop':
@@ -30,9 +34,8 @@ func act(action, args=null):
 			use_held_item()
 		'say':
 			say(args)
-		'move_and_pickup':
-			await move_to_target(Vector2(args[0] as float, args[1] as float))
-			pick_up_nearest_item()
+	
+	is_executing_action = false
 			
 	
 func move_to_target(target: Vector2):
@@ -41,13 +44,22 @@ func move_to_target(target: Vector2):
 	await reached_target
 	
 func _physics_process(delta):
-	if is_moving:
-		if global_position.distance_to(curr_target) < ARRIVAL_DIST_THRESHOLD:
-			is_moving = false
-			velocity = Vector2.ZERO
-			reached_target.emit()
-		else:
-			var target_dir = global_position.direction_to(curr_target)
-			velocity = target_dir * SPEED
-			move_and_slide()
+	if not is_executing_action and action_queue.size() > 0:
+		execute_action(action_queue.pop_front())
+	else:
+		if is_moving: _move_every_frame()
+
+func _move_every_frame():
+	if global_position.distance_to(curr_target) < ARRIVAL_DIST_THRESHOLD:
+		is_moving = false
+		velocity = Vector2.ZERO
+		reached_target.emit()
+	else:
+		var target_dir = global_position.direction_to(curr_target)
+		velocity = target_dir * SPEED
+		move_and_slide()
+
+#	
+#	act(action, args)
+	
 

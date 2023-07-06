@@ -146,15 +146,17 @@ func get_system_prompt():
 	Item you are holding: [{5}]
 	Items you can see: [{6}]
 	You can act by outputting a JSON of the following form:
-	{"action": <action name>, "args": <action parameters, if applicable>}
+	[{"action": <action name>, "args": <action parameters, if applicable>},]
+	The list of objects represents a sequence of actions to execute one after another.
 	Available actions:
 	- "move" (moves you to a point) takes a list of two numbers specifying coordinates to move to (e.q. [10, 10])
 	- "say" (lets you say stuff) takes a string of what to say as input
 	- "pickup" (picks up an item)
 	- "drop" (drops held item)
 	- "use" (uses an item)
-	- "move_and_pickup" (moves you to point and tries to pick up item) same arguments as "move"
-	For example, if you wanted to move to 20, 20 on the map, you would output {"action":"move", "args":[20, 20]}
+	For example, if you wanted to pick up an item located at (20, 20), you would output [{"action":"move", "args":[20, 20]}, {"action":"pickup", "args":null}].
+	If you wanted to then go somewhere to (60, 30) and leave the item there, you would output [{"action":"move", "args":[60, 30]}, {"action":"drop", "args":null}]
+	If someone asked you to bring some item to them, you would first say something back to them, then move to the item, pick up, move to that person, then drop.
 	Please reply with only the JSON object and nothing else. If an action takes no arguments, explicitly return them as null instead of omitting them.
 	""".format([
 		appearance, 

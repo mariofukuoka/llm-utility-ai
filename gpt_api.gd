@@ -13,7 +13,6 @@ func get_completion(prompt):
 	var messages = [
 			{"role": "system", "content": prompt}
 		]
-	print(messages)
 	var url = 'https://api.openai.com/v1/chat/completions'
 	var headers = [
 		'Content-Type: application/json', 

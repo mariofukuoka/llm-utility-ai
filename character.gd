@@ -96,7 +96,11 @@ func say(text):
 func _on_chat_fade_timer_timeout():
 	chat_fade_tween = get_tree().create_tween()
 	chat_fade_tween.tween_property($HUD/ChatBubble, 'modulate:a', 0, 5)
-	
+
+func wait(n_seconds: int):
+	print('start')
+	await get_tree().create_timer(n_seconds).timeout
+	print('end')
 	
 func get_perceived_characters(mode=null):
 	var nearby_characters = $PerceivedArea.get_overlapping_bodies().filter(func(b): return b is Character and b != self)
@@ -154,6 +158,7 @@ func get_system_prompt():
 	- "pickup" (picks up an item)
 	- "drop" (drops held item)
 	- "use" (uses an item)
+	- "wait" (stay idle for some time) takes a number of seconds as input (e.q. 5)
 	For example, if you wanted to pick up an item located at (20, 20), you would output [{"action":"move", "args":[20, 20]}, {"action":"pickup", "args":null}].
 	If you wanted to then go somewhere to (60, 30) and leave the item there, you would output [{"action":"move", "args":[60, 30]}, {"action":"drop", "args":null}]
 	If someone asked you to bring some item to them, you would first say something back to them, then move to the item, pick up, move to that person, then drop.

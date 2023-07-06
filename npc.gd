@@ -10,7 +10,9 @@ var action_queue = []
 var is_executing_action = false
 
 func reply(to_whom, text):
-	var LLM_decision = await GPTApi.get_completion(get_system_prompt())
+	var prompt = get_system_prompt()
+	print(prompt)
+	var LLM_decision = await GPTApi.get_completion(prompt)
 	print(LLM_decision)
 	var parsed_actions = JSON.parse_string(LLM_decision)
 	action_queue.append_array(parsed_actions)
@@ -21,8 +23,6 @@ func execute_action(action_dict):
 	var action = action_dict['action']
 	var args = null
 	if action_dict['args']: args = action_dict['args']
-	print(action)
-	print(args)
 	match action:
 		'move':
 			await move_to_target(Vector2(args[0] as float, args[1] as float))
@@ -34,6 +34,8 @@ func execute_action(action_dict):
 			use_held_item()
 		'say':
 			say(args)
+		'wait':
+			await wait(args as int)
 	
 	is_executing_action = false
 			
@@ -58,8 +60,4 @@ func _move_every_frame():
 		var target_dir = global_position.direction_to(curr_target)
 		velocity = target_dir * SPEED
 		move_and_slide()
-
-#	
-#	act(action, args)
-	
 

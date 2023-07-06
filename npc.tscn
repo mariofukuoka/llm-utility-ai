@@ -1,11 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://d4mr6dpux4tkl"]
+[gd_scene load_steps=5 format=3 uid="uid://d4mr6dpux4tkl"]
 
 [ext_resource type="PackedScene" uid="uid://cvae3dxaegyss" path="res://character.tscn" id="1_raoj2"]
 [ext_resource type="Script" path="res://npc.gd" id="2_2qvsn"]
 [ext_resource type="PackedScene" uid="uid://b0n4ch2esn7b8" path="res://gpt_api.tscn" id="3_swekx"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_s6rue"]
+font_size = 7
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
 [node name="NPC" instance=ExtResource("1_raoj2")]
 script = ExtResource("2_2qvsn")
+
+[node name="ChatBubble" parent="HUD" index="0"]
+label_settings = SubResource("LabelSettings_s6rue")
 
 [node name="MouseOver" type="Container" parent="HUD" index="2"]
 offset_left = -8.0

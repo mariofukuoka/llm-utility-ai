@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://cvae3dxaegyss"]
+[gd_scene load_steps=27 format=3 uid="uid://cvae3dxaegyss"]
 
 [ext_resource type="Script" path="res://character.gd" id="1_lyqa5"]
 [ext_resource type="Texture2D" uid="uid://dbxaat0vr8p5i" path="res://art/kenney_tiny-dungeon/Tiles/tile_0086.png" id="2_5w4o3"]
@@ -20,6 +20,8 @@
 [ext_resource type="Texture2D" uid="uid://cms7rfioxxv3n" path="res://art/kenney_tiny-dungeon/Tiles/tile_0088.png" id="18_uo1m4"]
 [ext_resource type="Texture2D" uid="uid://da526lmnkwbxm" path="res://art/kenney_tiny-dungeon/Tiles/tile_0111.png" id="19_q8gx5"]
 [ext_resource type="Texture2D" uid="uid://b2hafwos8gmb4" path="res://art/kenney_tiny-dungeon/Tiles/tile_0087.png" id="20_lxosd"]
+[ext_resource type="Texture2D" uid="uid://c8i5u56e06nuv" path="res://art/custom/bar_under.png" id="21_lwmk4"]
+[ext_resource type="Texture2D" uid="uid://kf6jy1jt75og" path="res://art/custom/bar_progress.png" id="22_5rfwv"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_1wom8"]
 animations = [{
@@ -220,16 +222,16 @@ autowrap_mode = 3
 wait_time = 5.0
 one_shot = true
 
-[node name="HealthBar" type="ProgressBar" parent="HUD"]
+[node name="HealthBar" type="TextureProgressBar" parent="HUD"]
 z_index = 2
-offset_left = -15.0
+offset_left = -12.0
 offset_top = 10.0
-offset_right = 15.0
-offset_bottom = 14.0
-theme_override_font_sizes/font_size = 2
+offset_right = 12.0
+offset_bottom = 12.0
 value = 100.0
 rounded = true
-show_percentage = false
+texture_under = ExtResource("21_lwmk4")
+texture_progress = ExtResource("22_5rfwv")
 
 [node name="PerceivedArea" type="Area2D" parent="."]
 collision_layer = 2

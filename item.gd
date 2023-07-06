@@ -21,5 +21,5 @@ func use():
 
 func get_description():
 	var desc = appearance
-	desc += ' ({0},{1})'.format([global_position.x as int, global_position.y as int])
+	#desc += ' ({0},{1})'.format([global_position.x as int, global_position.y as int])
 	return desc

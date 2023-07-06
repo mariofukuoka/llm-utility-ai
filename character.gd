@@ -101,7 +101,7 @@ func wait(n_seconds: int):
 	print('start')
 	await get_tree().create_timer(n_seconds).timeout
 	print('end')
-	
+
 func get_perceived_characters(mode=null):
 	var nearby_characters = $PerceivedArea.get_overlapping_bodies().filter(func(b): return b is Character and b != self)
 	nearby_characters.sort_custom(_compare_dist_to)
@@ -136,33 +136,51 @@ func get_perceived_items(mode=null):
 func get_description():
 	var desc = appearance
 	if held_item: desc += ' holding a ' + held_item.appearance
-	desc += ' ({0},{1})'.format([global_position.x as int, global_position.y as int])
+	#desc += ' ({0},{1})'.format([global_position.x as int, global_position.y as int])
 	return desc
+	
+func get_perceived_character_by_name(name):
+	for char in get_perceived_characters():
+		if char.appearance == name:
+			return char
 
-			
+func get_perceived_item_by_name(name):
+	for item in get_perceived_items():
+		if item.appearance == name:
+			return item
+
+func get_perceived_char_or_item_by_name(name):
+	print(name)
+	var char = get_perceived_character_by_name(name)
+	if char:
+		return char
+	else:
+		return get_perceived_item_by_name(name)
+
 func get_system_prompt():
-	var prompt = """
-	You are an NPC in an RPG game. You are a {0}. Respond in character and keep your response short.
+	var prompt = """d
+	You are an NPC in an RPG game. You are a {0}. Respond in character and keep your response short. You can only hold one item at a time. In order to use an item, you need to pick it up it first.
 	Event log:
 	{1}
 	Your position: ({2}, {3})
 	Characters you can see: [{4}]
 	Item you are holding: [{5}]
-	Items you can see: [{6}]
-	You can act by outputting a JSON of the following form:
-	[[<action1>, <argument1>],[<action2>, <argument2>], ...] etc.
-	The list of objects represents a sequence of actions to execute one after another.
+	Items you can see on the ground: [{6}]
+	Please output according to the following format:
+	{"observations": <your character's observations>,"action_description": <what to do now>,"action_as_sequence":[[<action1>,<argument1>],[<action2>,<argument2>],<etc>]}
+	The list of action, argument tuples represents a sequence of actions to execute one after another.
 	Available actions:
-	- "move" (moves you to a point) takes a list of two numbers specifying coordinates to move to (e.q. [10, 10])
-	- "say" (lets you say stuff) takes a string of what to say as input
-	- "pickup" (picks up an item)
-	- "drop" (drops held item)
-	- "use" (uses an item)
-	- "wait" (stay idle for some time) takes a number of seconds as input (e.q. 5)
-	For example, if you wanted to pick up an item located at (20, 20), you would output [["move", [20,20]], ["pickup"]].
-	If you wanted to then go somewhere to (60, 30) and leave the item there, you would output [[move", "args":[60, 30]], ["drop"]]
-	If someone asked you to bring some item to them, you would first say something back to them, then move to the item, pick up, move to that person, then drop.
-	Please reply with only the JSON object and nothing else. If an action takes no arguments, explicitly return them as null instead of omitting them.
+	- "move": moves you to a character or item as specified by name
+	- "move_to_point": moves you to a point, takes a list of two numbers specifying coordinates to move to (e.q. [10, 10])
+	- "say": lets you say stuff, takes a string of what to say as input
+	- "pickup": picks up an item so that you hold it
+	- "drop": drops held item
+	- "use": uses the item you are holding. If you are not holding the item, you cannot use it.
+	- "wait": if you want to stay idle, or have nothing to do, wait for some time, takes a number of seconds as input (e.q. 5)
+	Your job is to interpret what's happening in the world, and convert that into actions to undertake next.
+	For example, if a character asks you to bring them a potion, you would output:
+	{"observations": "I am asked to bring the character a potion.","action_description": "I should go to the potion, pick it up, then bring it to the character and drop it.","action_as_sequence":[["move","potion"],["pickup"],["move","character"],["drop"],["say","Here you go!"]]}
+	Please only respond with the JSON string.
 	""".format([
 		appearance, 
 		GlobalData.get_world_description(appearance), 

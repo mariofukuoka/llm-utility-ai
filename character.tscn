@@ -196,10 +196,10 @@ animation = &"crab"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_t8rnq")
 
-[node name="ItemDetectionArea" type="Area2D" parent="."]
+[node name="ReachArea" type="Area2D" parent="."]
 collision_layer = 2
 
-[node name="Reach" type="CollisionShape2D" parent="ItemDetectionArea"]
+[node name="Reach" type="CollisionShape2D" parent="ReachArea"]
 shape = SubResource("CircleShape2D_uekmm")
 debug_color = Color(0.768627, 0.447059, 0, 0.419608)
 
@@ -219,6 +219,17 @@ autowrap_mode = 3
 [node name="ChatFadeTimer" type="Timer" parent="HUD/ChatBubble"]
 wait_time = 5.0
 one_shot = true
+
+[node name="HealthBar" type="ProgressBar" parent="HUD"]
+z_index = 2
+offset_left = -15.0
+offset_top = 10.0
+offset_right = 15.0
+offset_bottom = 14.0
+theme_override_font_sizes/font_size = 2
+value = 100.0
+rounded = true
+show_percentage = false
 
 [node name="PerceivedArea" type="Area2D" parent="."]
 collision_layer = 2

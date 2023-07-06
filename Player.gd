@@ -17,6 +17,11 @@ func get_input():
 			else: drop_held_item()
 		elif Input.is_action_just_pressed('use_item'): 
 			use_held_item()
+		elif Input.is_action_just_pressed('debug'):
+			var nearby_npcs = get_perceived_npcs()
+			if nearby_npcs.size() > 0:
+				attack(nearby_npcs[0])
+			
 	else:
 		# to make sure player stops when pressing enter instead of sliding forever
 		velocity = Vector2.ZERO
@@ -44,14 +49,9 @@ func send_chat_message(text: String):
 	var nearby_npcs = $PerceivedArea.get_overlapping_bodies().filter(func(body): return body is NPC)
 	print(nearby_npcs)
 	if nearby_npcs.size() > 0:
-		# if message starts with /, interpret as command
-		if text.begins_with('/'):
-			var args = text.get_slice('/', 1).split(' ')
-			nearby_npcs[0].act(args[0], args.slice(1, args.size()))
-		else:
-			say(text)
-			for npc in nearby_npcs:
-				npc.reply(appearance, text)
+		say(text)
+		for npc in nearby_npcs:
+			npc.get_next_actions()
 			
 
 func _physics_process(delta):

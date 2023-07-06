@@ -6,6 +6,5 @@
 
 [node name="NPC" instance=ExtResource("1_raoj2")]
 script = ExtResource("2_2qvsn")
-health = null
 
 [node name="GPTApi" parent="." index="5" instance=ExtResource("3_swekx")]

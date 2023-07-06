@@ -3,13 +3,13 @@ extends Character
 class_name NPC
 
 signal reached_target
-const ARRIVAL_DIST_THRESHOLD = 1
+const ARRIVAL_DIST_THRESHOLD = 16
 var is_moving = false
 var curr_target: Vector2
 var action_queue = []
 var is_executing_action = false
 
-func reply(to_whom, text):
+func get_next_actions():
 	var prompt = get_system_prompt()
 	print(prompt)
 	var LLM_decision = await $GPTApi.get_completion(prompt)
@@ -33,7 +33,10 @@ func execute_action(action_tuple):
 		'use':
 			use_held_item()
 		'say':
-			say(action_tuple[1])
+			say(args)
+		'attack':
+			await move_to_target(get_perceived_char_or_item_by_name(args).global_position)
+			attack_by_name(args)
 		'wait':
 			await wait(args as int)
 	
@@ -60,4 +63,6 @@ func _move_every_frame():
 		var target_dir = global_position.direction_to(curr_target)
 		velocity = target_dir * SPEED
 		move_and_slide()
+
+
 

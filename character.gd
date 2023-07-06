@@ -35,9 +35,8 @@ func pick_up_item(item: Item):
 
 
 func pick_up_nearest_item():
-	var nearby_items = $ItemDetectionArea.get_overlapping_areas().filter(func(a): return a is Item)
+	var nearby_items = get_items_in_reach()
 	if nearby_items.size() > 0:
-		nearby_items.sort_custom(_compare_dist_to)
 		pick_up_item(nearby_items[0])
 		
 		
@@ -76,4 +75,27 @@ func say(text):
 func _on_chat_fade_timer_timeout():
 	chat_fade_tween = get_tree().create_tween()
 	chat_fade_tween.tween_property($HUD/ChatBubble, 'modulate:a', 0, 5)
+	
+	
+func get_perceived_characters():
+	var nearby_players = $PerceivedArea.get_overlapping_bodies().filter(func(b): return b is Character)
+	nearby_players.sort_custom(_compare_dist_to)
+	return nearby_players
+	
+func get_perceived_npcs():
+	return get_perceived_characters().filter(func(char): return char is NPC)
+
+func get_perceived_players():
+	return get_perceived_characters().filter(func(char): return char is Player)
+	
+
+func get_items_in_reach():
+	var nearby_items = $ItemDetectionArea.get_overlapping_areas().filter(func(a): return a is Item)
+	nearby_items.sort_custom(_compare_dist_to)
+	return nearby_items
+	
+func get_perceived_items():
+	var nearby_items = $PerceivedArea.get_overlapping_areas().filter(func(a): return a is Item)
+	nearby_items.sort_custom(_compare_dist_to)
+	return nearby_items
 		

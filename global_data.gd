@@ -14,7 +14,10 @@ func get_world_description():
 	var world_desc: String
 	for event in world_log:
 		var elapsed_sec = ((now - event['when']) / 1000) as int
-		var event_desc = '[{0}s ago] {1} {2} {3}'.format([elapsed_sec, event['who'], event['action'], event['what']])
+		var what = event['what']
+		if event['action'] == 'said':
+			what = '"' + what + '"'
+		var event_desc = '[{0}s ago] {1} {2} {3}'.format([elapsed_sec, event['who'], event['action'], what])
 		world_desc += event_desc + '\n'
 	return world_desc
 		

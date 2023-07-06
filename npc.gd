@@ -7,7 +7,7 @@ var is_moving = false
 var curr_target: Vector2
 
 func reply(to_whom, text):
-	var LLM_decision = await GPTApi.get_completion(to_whom, text)
+	var LLM_decision = await GPTApi.get_completion(get_system_prompt())
 	print(LLM_decision)
 	var parsed = JSON.parse_string(LLM_decision)
 	var action = parsed['action']
@@ -30,7 +30,7 @@ func act(action, args=null):
 		'say':
 			say(args)
 		'follow':
-			var nearby_players = $PerceivedArea.get_overlapping_bodies().filter(func(b): return b is Player)
+			var nearby_players = get_perceived_players()
 			if nearby_players.size() > 0:
 				move_to_target(nearby_players[0].global_position)
 	
@@ -47,4 +47,23 @@ func _physics_process(delta):
 			var target_dir = global_position.direction_to(curr_target)
 			velocity = target_dir * SPEED
 			move_and_slide()
+			
+func get_system_prompt():
+	var prompt = """
+	You are an NPC in an RPG game. You are a {0}. Respond in character and keep your response short.
+	Event log:
+	{1}
+	You can act by outputting a JSON of the following form:
+	{"action": <action name>, "args": <action parameters, if applicable>}
+	Available actions:
+	- "move" (moves you to a point) takes a list of two numbers specifying coordinates to move to (e.q. [10, 10])
+	- "say" (lets you say stuff) takes a string of what to say as input
+	- "pickup" (picks up an item)
+	- "drop" (drops held item)
+	- "use" (uses an item)
+	- "follow" (follows the player)
+	For example, if you wanted to move to 20, 20 on the map, you would output {"action":"move", "args":[20, 20]}
+	Please reply with only the JSON object and nothing else. If an action takes no arguments, explicitly return them as null instead of omitting them.
+	""".format([appearance, GlobalData.get_world_description()])
+	return prompt
 		

@@ -34,7 +34,9 @@ func get_input():
 	elif Input.is_action_just_pressed('release_chat_focus'):
 		is_typing = false
 		$HUD/ChatBox.release_focus()
-		print(GlobalData.get_world_description())
+		var nearby_npcs = get_perceived_npcs()
+		if nearby_npcs.size() > 0:
+			print(nearby_npcs[0].get_system_prompt())
 
 func send_chat_message(text: String):
 	# detect nearby npcs
@@ -54,3 +56,4 @@ func _physics_process(delta):
 	get_input()
 	move_and_slide()
 	
+

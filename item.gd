@@ -18,3 +18,8 @@ func set_appearance():
 func use():
 	if is_being_held:
 		print('{0} used'.format([self.appearance]))
+
+func get_description():
+	var desc = appearance
+	desc += ' ({0},{1})'.format([global_position.x as int, global_position.y as int])
+	return desc

@@ -298,5 +298,6 @@ layer_0/tile_data = PackedInt32Array(0, 131073, 0, 65536, 1, 0, 131073, 131073, 
 
 [node name="Player" parent="." instance=ExtResource("5_b5xjs")]
 position = Vector2(120, 120)
+health = 100
 
 [node name="Items" type="Node2D" parent="."]

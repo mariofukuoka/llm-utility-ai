@@ -3,16 +3,18 @@ extends Node
 
 var world_log = []
 
-func log_event(who: String, action: String, what: String):
+func log_event(who: String, action: String, what: String, seen_by: Array):
 	var now = Time.get_ticks_msec()
-	var event = {'who': who, 'action': action, 'what': what, 'when': now}
+	var event = {'who': who, 'action': action, 'what': what, 'when': now, 'seen_by':seen_by}
 	world_log.append(event)
 	print(event)
 	
-func get_world_description():
+func get_world_description(character):
 	var now = Time.get_ticks_msec()
 	var world_desc: String
 	for event in world_log:
+		if (character != event['who']) and (character not in event['seen_by']):
+			continue
 		var elapsed_sec = ((now - event['when']) / 1000) as int
 		var what = event['what']
 		if event['action'] == 'said':

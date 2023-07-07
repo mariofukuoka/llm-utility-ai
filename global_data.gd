@@ -1,5 +1,6 @@
 extends Node
 
+signal event_logged
 
 var world_log = []
 
@@ -8,6 +9,7 @@ func log_event(who: String, action: String, what: String, seen_by: Array):
 	var event = {'who': who, 'action': action, 'what': what, 'when': now, 'seen_by':seen_by}
 	world_log.append(event)
 	print(event)
+	event_logged.emit()
 	
 func get_world_description(character):
 	var now = Time.get_ticks_msec()

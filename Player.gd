@@ -7,6 +7,10 @@ var is_typing = false
 func set_appearance():
 	appearance = 'knight'
 	$AnimatedSprite2D.play(appearance)
+	GlobalData.event_logged.connect(_on_event_logged)
+	
+func _on_event_logged():
+	$HUD/EventLog.text = 'Event log:\n' + GlobalData.get_world_description(appearance)
 
 func get_input():
 	if not is_typing:

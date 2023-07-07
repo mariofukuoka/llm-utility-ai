@@ -16,7 +16,7 @@ var SPEED = 100
 func _ready():
 	items = get_node('/root/Main/Items')
 	set_appearance()
-	print(appearance, ' ', health_points)
+	$HUD/Name.text = appearance
 	
 	
 func set_appearance():
@@ -27,29 +27,33 @@ func set_appearance():
 
 
 func pick_up_item(item: Item):
-	if not item.is_being_held:
-		item.get_parent().remove_child(item)
-		self.add_child(item)
-		item.position = Vector2.ZERO
-		item.is_being_held = true
-		held_item = item
-		# log event
-		GlobalData.log_event(
-			appearance, 
-			'picked up', 
-			held_item.appearance, 
-			get_perceived_characters(MODE.NAME_ONLY)
-			)
+	if held_item:
+		drop_held_item()
+	item.get_parent().remove_child(item)
+	self.add_child(item)
+	item.position = Vector2.ZERO
+	item.is_being_held = true
+	held_item = item
+	# log event
+	GlobalData.log_event(
+		appearance, 
+		'picked up', 
+		held_item.appearance, 
+		get_perceived_characters(MODE.NAME_ONLY)
+		)
 
 
 func pick_up_nearest_item():
-	if held_item:
-		drop_held_item()
 	var nearby_items = get_items_in_reach()
 	if nearby_items.size() > 0:
 		pick_up_item(nearby_items[0])
 		
-		
+func pick_up_item_by_name(item_name: String):
+	var nearby_items = $ReachArea.get_overlapping_areas().filter(func(a): return a is Item and not a.is_being_held)
+	var found_idx = nearby_items.map(func(item): return item.appearance).find(item_name)
+	if found_idx >= 0:
+		pick_up_item(nearby_items[found_idx])
+
 func _compare_dist_to(a, b): 
 	return position.distance_to(a.position) < position.distance_to(b.position)
 	
@@ -200,7 +204,7 @@ func get_perceived_char_or_item_by_name(name):
 		return get_perceived_item_by_name(name)
 
 func get_system_prompt():
-	var prompt = """d
+	var prompt = """
 	You are an NPC in an RPG game. You are a {0}. Respond in character and keep your response short. You can only hold one item at a time. In order to use an item, you need to pick it up it first.
 	Event log:
 	{1}
@@ -215,18 +219,18 @@ func get_system_prompt():
 	- "move": moves you to a character or item as specified by name
 	- "move_to_point": moves you to a point, takes a list of two numbers specifying coordinates to move to (e.q. [10, 10])
 	- "say": lets you say stuff, takes a string of what to say as input
-	- "pickup": picks up an item so that you hold it
+	- "pickup": picks up an item so that you hold it, takes item name as input
 	- "drop": drops held item
 	- "use": uses the item you are holding. If you are not holding the item, you cannot use it.
 	- "attack": attacks character within reach, specified by name
 	- "wait": if you want to stay idle, or have nothing to do, wait for some time, takes a number of seconds as input (e.q. 5)
 	Your job is to interpret what's happening in the world, and convert that into actions to undertake next.
 	For example, if a character asks you to bring them a potion, you would output:
-	{"observations":"I am asked to bring the character a potion.","what_to_do": "I should go to the potion, pick it up, then bring it to the character and drop it.","action_as_sequence":[["move","potion"],["pickup"],["move","character"],["drop"],["say","Here you go!"]]}
+	{"observations":"I am asked to bring the character a potion.","what_to_do": "I should go to the potion, pick it up, then bring it to the character and drop it.","action_as_sequence":[["move","potion"],["pickup", "potion"],["move","character"],["drop"],["say","Here you go!"]]}
 	Another example:
 	{"observations":"The villager just greeted me.","what_to_do":"I should respond and greet them back.","action_as_sequence":[["say","Hello!"]]}
 	Another example:
-	{"observations":"The adventurer just told me that the sword is magical! I should keep it to myself.","what_to_do":"I should go pick up the sword, then tell the adventurer to back away!","action_as_sequence":[["move","weapon_sword"],["pickup"],["use"],["say","This is mine, haha! Back off if you value your life!"]}
+	{"observations":"The adventurer just told me that the sword is magical! I should keep it to myself.","what_to_do":"I should go pick up the sword, then tell the adventurer to back away!","action_as_sequence":[["move","weapon_sword"],["pickup", "weapon_sword"],["use"],["say","This is mine, haha! Back off if you value your life!"]}
 	Another example:
 	{"observations":"I can see the enemy nearby.","what_to_do":"I should run at them and attack them!","action_as_sequence":[["move","enemy"],["say", "Die, you cur!"],["attack","enemy"],["attack","enemy"]]}
 	Please only respond with the JSON string. Be talkative, use a lot of "say" commands where applicable.

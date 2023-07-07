@@ -21,8 +21,8 @@ GlobalData="*res://global_data.gd"
 
 [display]
 
-window/size/viewport_width=640
-window/size/viewport_height=640
+window/size/viewport_width=720
+window/size/viewport_height=720
 
 [gui]
 

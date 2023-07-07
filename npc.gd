@@ -15,13 +15,13 @@ func get_next_actions():
 	print(prompt)
 	var LLM_decision = await $GPTApi.get_completion(prompt)
 	print(LLM_decision)
-	var parsed_actions = JSON.parse_string(LLM_decision)
+	var parsed = JSON.parse_string(LLM_decision)
 	$HUD/MouseOver.tooltip_text = 'Observations: "{0}"\nWhat to do: "{1}\nAction as sequence: {2}'.format([
-		parsed_actions['observations'], 
-		parsed_actions['what_to_do'],
-		JSON.stringify(parsed_actions['action_as_sequence'])
+		parsed['observations'], 
+		parsed['what_to_do'],
+		JSON.stringify(parsed['action_as_sequence'])
 		])
-	action_queue.append_array(parsed_actions['action_as_sequence'])
+	action_queue.append_array(parsed['action_as_sequence'])
 
 func execute_action(action_tuple):
 	is_executing_action = true
@@ -29,11 +29,13 @@ func execute_action(action_tuple):
 	var args = action_tuple[1] if action_tuple.size() > 1 else null
 	match action:
 		'move':
-			await move_to_target(get_perceived_char_or_item_by_name(args).global_position)
+			var target = get_perceived_char_or_item_by_name(args)
+			if target:
+				await move_to_target(target.global_position)
 		'move_to_point':
 			await move_to_target(Vector2(args[0] as float, args[1] as float))
 		'pickup':
-			pick_up_nearest_item()
+			pick_up_item_by_name(args)
 		'drop':
 			drop_held_item()
 		'use':

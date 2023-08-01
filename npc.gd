@@ -3,6 +3,7 @@ extends Character
 class_name NPC
 
 signal reached_target
+signal action_queue_finished
 const ARRIVAL_DIST_THRESHOLD = 16
 var is_moving = false
 var curr_target: Vector2
@@ -12,9 +13,9 @@ var thought_fade_tween: Tween
 
 func get_next_actions():
 	var prompt = get_system_prompt()
-	print(prompt)
+	#print(prompt)
 	var LLM_decision = await $GPTApi.get_completion(prompt)
-	print(LLM_decision)
+	#print(LLM_decision)
 	var parsed = JSON.parse_string(LLM_decision)
 	$HUD/MouseOver.tooltip_text = 'Observations: "{0}"\nWhat to do: "{1}\nAction as sequence: {2}'.format([
 		parsed['observations'], 
@@ -56,9 +57,17 @@ func move_to_target(target: Vector2):
 	curr_target = target
 	await reached_target
 	
+func take_turn():
+	await get_next_actions()
+	await action_queue_finished
+	turn_completed.emit()
+	
+	
 func _physics_process(delta):
 	if not is_executing_action and action_queue.size() > 0:
 		execute_action(action_queue.pop_front())
+	elif not is_executing_action and action_queue.size() == 0:
+		action_queue_finished.emit()
 	else:
 		if is_moving: _move_every_frame()
 

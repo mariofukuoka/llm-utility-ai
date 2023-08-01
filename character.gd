@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 class_name Character
 
+signal turn_completed
 var items
 var health_points = 100
 var max_health_points = 100
@@ -17,7 +18,12 @@ func _ready():
 	items = get_node('/root/Main/Items')
 	set_appearance()
 	$HUD/Name.text = appearance
+
+func take_turn():
+	pass	
 	
+func complete_turn():
+	turn_completed.emit()
 	
 func set_appearance():
 	var sprites = $AnimatedSprite2D.sprite_frames.get_animation_names()

@@ -3,17 +3,24 @@ extends Character
 class_name Player
 
 var is_typing = false
+var is_player_turn = false
 
 func set_appearance():
 	appearance = 'knight'
 	$AnimatedSprite2D.play(appearance)
 	GlobalData.event_logged.connect(_on_event_logged)
 	
+func take_turn():
+	is_player_turn = true
+	await get_tree().create_timer(10).timeout	
+	is_player_turn = false
+	turn_completed.emit()
+	
 func _on_event_logged():
 	$HUD/EventLog.text = 'Event log:\n' + GlobalData.get_world_description(appearance)
 
 func get_input():
-	if not is_typing:
+	if not is_typing and is_player_turn:
 		var input_dir = Input.get_vector('left', 'right', 'up', 'down')
 		velocity = input_dir * SPEED
 		if Input.is_action_just_pressed('pick_up_or_drop_item'):
@@ -54,8 +61,8 @@ func send_chat_message(text: String):
 	print(nearby_npcs)
 	if nearby_npcs.size() > 0:
 		say(text)
-		for npc in nearby_npcs:
-			npc.get_next_actions()
+		#for npc in nearby_npcs:
+			#npc.get_next_actions()
 			
 
 func _physics_process(delta):
